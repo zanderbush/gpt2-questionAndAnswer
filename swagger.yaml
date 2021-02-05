@@ -1,0 +1,42 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "gpt2-recipe-maker"
+host: "master-gpt2-covid-article-ha-mulan.endpoint.ainize.ai"
+basePath: "/api/"
+schemes:
+- "https"
+- "http"
+consumes:
+  - string
+produces:
+  - string
+paths:
+  /:
+    get:
+      tags:
+      - "make article related to covid19"
+      summary: "create article"
+      description: "please input name of covid19 artice"
+      produces:
+      - "string"
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "keyword"
+        type: 'string'
+        in: "query"
+        description: "contents of artice"
+        required: true
+        items:
+          type: "string"
+          default: "trump"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid status value"
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
