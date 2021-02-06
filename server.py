@@ -15,8 +15,8 @@ requests_queue = Queue()
 BATCH_SIZE = 1
 CHECK_INTERVAL = 0.1
 
-tokenizer = AutoTokenizer.from_pretrained("encyclopedia")
-model = AutoModelWithLMHead.from_pretrained("encyclopedia", return_dict=True)
+tokenizer = AutoTokenizer.from_pretrained("zanderbush/Intellectual")
+model = AutoModelWithLMHead.from_pretrained("zanderbush/Intellectual", return_dict=True)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(device)
 
@@ -40,25 +40,19 @@ threading.Thread(target=handle_requests_by_batch).start()
 def run_model(prompt, num=1, length=30):
     try:
         prompt = prompt.strip()
-        input_ids = tokenizer.encode(prompt, return_tensors='pt')
-
-        # input_ids also need to apply gpu device!
-        input_ids = input_ids.to(device)
-
-        min_length = len(input_ids.tolist()[0])
-        length += min_length
-
-        # model = models[model_name]
-        sample_outputs = model.generate(input_ids, pad_token_id=50256,
-                                        do_sample=True,
-                                        max_length=300,
-
-                                        top_k=50,
-                                        num_return_sequences=num)
-        generated_texts = ""
-        for i, sample_output in enumerate(sample_outputs):
-            output = tokenizer.decode(sample_output.tolist(),skip_special_tokens=False)
-            generated_texts+= output+'\n'
+        text = tokenizer.encode(prompt)
+        myinput, past = torch.tensor([text]), None
+        logits, past = model(myinput, past = past)
+        logits = logits[0,-1]
+        probabilities = torch.nn.functional.softmax(logits)
+        best_logits, best_indices = logits.topk(50)
+        best_words = [tokenizer.decode([idx.item()]) for idx in best_indices]
+        text.append(best_indices[0].item())
+        best_probabilities = probabilities[best_indices].tolist()
+        generated_texts = []
+        for i in range(50):
+            f = ('{}'.format(best_words[i]))
+            generated_texts.append(f)
         print(generated_texts)
         return generated_texts
 
