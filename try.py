@@ -6,8 +6,8 @@ from queue import Queue, Empty
 import time
 import threading
 
-tokenizer = AutoTokenizer.from_pretrained("mrm8488/gpt2-finetuned-recipes-cooking_v2")
-model = AutoModelWithLMHead.from_pretrained("mrm8488/gpt2-finetuned-recipes-cooking_v2", return_dict=True)
+tokenizer = AutoTokenizer.from_pretrained("zanderbush/Intellectual")
+model = AutoModelWithLMHead.from_pretrained("zanderbush/Intellectual", return_dict=True)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(device)
 
