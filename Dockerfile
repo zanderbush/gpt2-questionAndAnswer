@@ -1,5 +1,9 @@
-# FROM ham5312/covidarticle:1.0
-FROM ham5312/questionandanswer:1.0
+FROM pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime
+
+RUN apt-get update
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 WORKDIR /app
 COPY . .
