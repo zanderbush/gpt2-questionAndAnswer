@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "gpt2-recipe-maker"
-host: "master-gpt2-covid-article-ha-mulan.endpoint.ainize.ai"
+host: "https://master-gpt2-question-and-answer-zanderbush.endpoint.ainize.ai"
 basePath: "/api/"
 schemes:
 - "https"
